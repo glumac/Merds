@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  word: MyString
+  is_common: false
+  search_count: 1
+
+two:
+  word: MyString
+  is_common: false
+  search_count: 1
