@@ -1,55 +1,57 @@
 class MusiciansController < ApplicationController
-	# require 'lib/api_search'
-	include ApiSearch
+  # require 'lib/api_search'
+  include ApiSearch
 
 
-	def index
-		@musician = Musician.new
-	end
+  def index
+    @musician = Musician.new
+  end
 
-	def show
-		render text: "SHOW TEST 123"
-	end
+  def show
+    musician = Musician.find(params[:id])
+    @worduse = Worduse.where(:musician_id => musician.id)
+              # Person.where(:user_name => "xyz", :status => ["active", "deleted"])
+    puts @worduse
+  end
 
 
-	def musician_query
-
-		Musician.delete_all
-
-		name = params[:musician_query].chomp.downcase
-    musician = Musician.find_by_name(name)
+  def musician_query
+    @musician_name = params[:musician_query].downcase
+    musician = Musician.find_by_name(@musician_name)
 
     if !musician
-
-    	name, words = musician_wordcount(name)
-
+      musician_wordcount(@musician_name)
+      words = musician_wordcount(@musician_name)
       # api stuff and save new musician
-      musician = Musician.create(name: name.chomp.downcase)
+      
+      musician = Musician.create(name: @musician_name)
+      
+      words[1].each do |key, value|
 
-      words.each do |key, value|
         ### line below is rails shortcut
-        word = find_by_word(key)
+
+        word = Word.find_by_word(key)
         if !word
           word = Word.create(word: key)
         end
 
         Worduse.create(:count => value, :musician_id => musician.id, :word_id => word.id)
-        ##dont need to have :count etc in attr accessable if use below method 
-        # musician.worduses << worduse
-        # word.worduses << worduse
       end
     end
 
-		redirect_to musician_path(musician)
+    redirect_to musician_path(musician)
 
- 	end
-
-
+  end
 end
 
-    
 
+  def api_search_musician(musician_name)
 
+    query = musician_name
+    search = MusicBrainz::Artist.find_by_name("#{query.downcase.gsub(" ", "_")}")
+    return search
+
+  end
 
 
 

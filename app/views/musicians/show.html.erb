@@ -1,3 +1,10 @@
-show.html.erb
 
-ok.
+
+<table>
+<% @worduse.each do |worduse| %>
+<tr>
+		<td><%= worduse.word.word %></td>
+	<td><%= worduse.count %></td>
+</tr>
+<% end %>
+</table>

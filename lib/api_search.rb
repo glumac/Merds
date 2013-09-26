@@ -1,7 +1,6 @@
-
 module ApiSearch
 		# require 'musicbrainz' IF GOING TO USE MODULE ELSEWHERE
-		
+
 
 	include MusicBrainz
 
@@ -27,17 +26,17 @@ module ApiSearch
 	end
 
 
-	def musician_wordcount(musican_name)
+	def musician_wordcount(musician_name)
 		puts "COUNT THOSE WORDS!!"
 		puts "****************************************"
 		prepare_musicbrainz
-				
+
 		search = api_search_musician(musician_name)
 		musician_releases = api_search_albums(search)
 		musician_tracks = api_search_tracks(musician_releases)
-		musician_lyrics = api_search_lyrics(musician_tracks)	
+		musician_lyrics = api_search_lyrics(musician_tracks)
 		words = count_words(musician_lyrics)
-		name = musician_name ####TRIPLE TRIPLE CHECK THIS 
+		name = musician_name ####TRIPLE TRIPLE CHECK THIS
 
 		return [name, words]
 
@@ -46,11 +45,10 @@ module ApiSearch
 	def api_search_musician(musician_name)
 
 		query = musician_name
-		
-		search = MusicBrainz::Artist.find_by_name("#{query.downcase.gsub(" ", "_")}")
-
+		search = MusicBrainz::Artist.find_by_name("#{query.gsub(" ", "_")}")
+		sleep(1)
 		return search
-		
+
 	end
 
 	def api_search_albums(search)
@@ -58,10 +56,23 @@ module ApiSearch
 		musician_releases = {}
 
 		search.release_groups.each do |release_group|
+			sleep(1)
 		  if releases = release_group.releases
+
+
+
+
+
+		  	releases = [releases[0]]
+
+
+
+
+
 		    releases.each do |release|
 		      if release.type == "Album"
 		        if !musician_releases[release.title]
+		        	puts "Release: #{release.title}"
 		          musician_releases[release.title] = release
 		        end
 		      end
@@ -70,7 +81,7 @@ module ApiSearch
 		end
 
 		return musician_releases
-	
+
 	end
 
 
@@ -79,9 +90,20 @@ module ApiSearch
 		musician_tracks = []
 
 		musician_releases.each do |release_title, release|
+			sleep(1)
 		  if tracks = release.tracks
 		    # p "#{release.title}: #{tracks.count}"
+
+
+
+
+		    tracks = [tracks[0]]
+
+
+
+
 		    tracks.each do |track|
+		    	puts "Track: #{track.title}"
 		      musician_tracks << track.title
 		    end
 		  end
@@ -91,14 +113,14 @@ module ApiSearch
 
 		#HERE IS WHERE I TAKE THE ARIST TRACKS ARRAY AND SPIT OUT LARGE HASH OF LYRICS AND COUNT
 
-	def api_search_lyrics(musician_tracks)	
+	def api_search_lyrics(musician_tracks)
 
 		musician_lyrics = []
 
 		fetcher = Lyricfy::Fetcher.new
 
 		musician_tracks.uniq.each do |title|
-		  song = fetcher.search query, "#{title}"
+		  song = fetcher.search @musician_name, "#{title}"
 		  if song
 		    s = song.body.downcase.gsub(/\\n/, " ").gsub(',', "") # prints lyrics separated by '\n'
 		    words = s.split
@@ -111,31 +133,30 @@ module ApiSearch
 	end
 
 
+	# def count_words
+ #    words = Hash.new(0); each{ |v| words[v] += 1 }; words
+	# end
+
 	# THIS IS REALLY WHAT DEFINE FREQUENCY IS DOING WITH NORMAl LONGER SYNTAX
 	def count_words(text_block)
 
-		text_array = text_block.split
-    words = Hash.new(0);
-    text_array.each{ |a_word| words[a_word.downcase] += 1 }
+		# puts text_block
+
+		text_array = text_block.flatten
+    words = {};
+
+    text_array.each do |a_word| 
+
+    	puts a_word
+    	if words[a_word] 
+    		words[a_word] +=1
+    	else
+    		words[a_word] = 1
+    	end
+
+    end
 
     return words
 	end
 
 end
-
-	# def frequency
-	# 	  	name = MusicBrainz::musician.find_by_name("#{query.downcase.gsub(" ", "_")}")
-	# 	    words = Hash.new(0); each{ |v| words[v] += 1 }; words
-	#  end
-
-	# 	  return [name, words]
-	# 	  ####   NEED TO GET NAME FROM MUSICBRAINS HAVENT DONE YET
-
-	# end
-
-
-
-
-
-
-

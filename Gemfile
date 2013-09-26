@@ -9,6 +9,7 @@ gem 'devise'
 gem 'jquery-rails'
 
 gem 'pry'
+gem "pry-rails"
 gem 'pry-nav'
 gem 'lyricfy'
 gem 'musicbrainz', '~> 0.7.6'
