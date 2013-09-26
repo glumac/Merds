@@ -1,6 +1,6 @@
-class CreateArtists < ActiveRecord::Migration
+class CreateMusicians < ActiveRecord::Migration
   def change
-    create_table :artists do |t|
+    create_table :musicians do |t|
       t.string :name
       t.integer :search_count
 

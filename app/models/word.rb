@@ -3,7 +3,7 @@ class Word < ActiveRecord::Base
   # has_and_belongs_to_many :artists
 
 	has_many :worduses
-  has_many :artists, :through => :worduses
+  has_many :musicians, :through => :worduses
 
 end
 
