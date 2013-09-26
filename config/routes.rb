@@ -1,6 +1,6 @@
 Lyricz::Application.routes.draw do
 
-  devise_for :users
+  devise_for :admins
 
   resources :artists, only: [:index, :new, :create, :show]
   resources :words, only: [:index, :new, :create, :show]
@@ -11,8 +11,11 @@ Lyricz::Application.routes.draw do
 
   # get '/musicbranz_artists/:id' => 'musicbranz_artists#show'
 
+  post   '/artist_query' => 'artists#artist_query'
+  #method    url            controller  action
 
   root :to => 'artists#index'
+  # post '/persons/create', to: "artists#create"
 
 end
 

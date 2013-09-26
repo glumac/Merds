@@ -1,1 +1,21 @@
-index.html.erb
+<h1>MURDS</h1>
+<h3>music words.<h3>
+
+<form action="/artist_query" method='post' >
+	<label for="query" >Artist Name:</label>
+	<input type='text' name='artist_query' />
+	<input type='submit'>
+<form>
+
+<% if @artists %>
+	<table>
+
+		<% @artists.each do |artist| %>
+			<tr>
+				<td> <%= artist.name %></td>
+				<!-- <td> <%= release.date %></td> -->
+			</tr>	
+		<% end %>
+
+	</table>
+<% end %>
