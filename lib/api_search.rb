@@ -27,25 +27,25 @@ module ApiSearch
 	end
 
 
-	def artist_wordcount(artist_name)
+	def musician_wordcount(musican_name)
 		puts "COUNT THOSE WORDS!!"
 		puts "****************************************"
 		prepare_musicbrainz
 				
-		search = api_search_artist(artist_name)
-		artist_releases = api_search_albums(search)
-		artist_tracks = api_search_tracks(artist_releases)
-		artist_lyrics = api_search_lyrics(artist_tracks)	
-		words = count_words(artist_lyrics)
-		name = artist_name ####TRIPLE TRIPLE CHECK THIS 
+		search = api_search_musician(musician_name)
+		musician_releases = api_search_albums(search)
+		musician_tracks = api_search_tracks(musician_releases)
+		musician_lyrics = api_search_lyrics(musician_tracks)	
+		words = count_words(musician_lyrics)
+		name = musician_name ####TRIPLE TRIPLE CHECK THIS 
 
 		return [name, words]
 
 	end
 
-	def api_search_artist(artist_name)
+	def api_search_musician(musician_name)
 
-		query = artist_name
+		query = musician_name
 		
 		search = MusicBrainz::Artist.find_by_name("#{query.downcase.gsub(" ", "_")}")
 
@@ -55,58 +55,58 @@ module ApiSearch
 
 	def api_search_albums(search)
 
-		artist_releases = {}
+		musician_releases = {}
 
 		search.release_groups.each do |release_group|
 		  if releases = release_group.releases
 		    releases.each do |release|
 		      if release.type == "Album"
-		        if !artist_releases[release.title]
-		          artist_releases[release.title] = release
+		        if !musician_releases[release.title]
+		          musician_releases[release.title] = release
 		        end
 		      end
 		    end
 		  end
 		end
 
-		return artist_releases
+		return musician_releases
 	
 	end
 
 
-	def api_search_tracks(artist_releases)
+	def api_search_tracks(musician_releases)
 
-		artist_tracks = []
+		musician_tracks = []
 
-		artist_releases.each do |release_title, release|
+		musician_releases.each do |release_title, release|
 		  if tracks = release.tracks
 		    # p "#{release.title}: #{tracks.count}"
 		    tracks.each do |track|
-		      artist_tracks << track.title
+		      musician_tracks << track.title
 		    end
 		  end
 		end
-			return artist_tracks
+			return musician_tracks
 	end
 
 		#HERE IS WHERE I TAKE THE ARIST TRACKS ARRAY AND SPIT OUT LARGE HASH OF LYRICS AND COUNT
 
-	def api_search_lyrics(artist_tracks)	
+	def api_search_lyrics(musician_tracks)	
 
-		artist_lyrics = []
+		musician_lyrics = []
 
 		fetcher = Lyricfy::Fetcher.new
 
-		artist_tracks.uniq.each do |title|
+		musician_tracks.uniq.each do |title|
 		  song = fetcher.search query, "#{title}"
 		  if song
 		    s = song.body.downcase.gsub(/\\n/, " ").gsub(',', "") # prints lyrics separated by '\n'
 		    words = s.split
-		    artist_lyrics << words
+		    musician_lyrics << words
 		  end
 		end
 
-		return artist_lyrics
+		return musician_lyrics
 
 	end
 
@@ -124,7 +124,7 @@ module ApiSearch
 end
 
 	# def frequency
-	# 	  	name = MusicBrainz::Artist.find_by_name("#{query.downcase.gsub(" ", "_")}")
+	# 	  	name = MusicBrainz::musician.find_by_name("#{query.downcase.gsub(" ", "_")}")
 	# 	    words = Hash.new(0); each{ |v| words[v] += 1 }; words
 	#  end
 
