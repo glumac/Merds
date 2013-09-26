@@ -2,20 +2,20 @@ Lyricz::Application.routes.draw do
 
   devise_for :admins
 
-  resources :artists, only: [:index, :new, :create, :show]
+  resources :musicians, only: [:index, :new, :create, :show]
   resources :words, only: [:index, :new, :create, :show]
 
-  # get '/musicbranz_artists' => 'musicbranz_artists#index'
-  # get '/musicbranz_artists/new' => 'musicbranz_artists#new'
-  # post '/musicbranz_artists' => 'musicbranz_artists#create'
+  # get '/musicbranz_musicians' => 'musicbranz_musicians#index'
+  # get '/musicbranz_musicians/new' => 'musicbranz_musicians#new'
+  # post '/musicbranz_musicians' => 'musicbranz_musicians#create'
 
-  # get '/musicbranz_artists/:id' => 'musicbranz_artists#show'
+  # get '/musicbranz_musicians/:id' => 'musicbranz_musicians#show'
 
-  post   '/artist_query' => 'artists#artist_query'
+  post   '/musician_query' => 'musicians#musician_query'
   #method    url            controller  action
 
-  root :to => 'artists#index'
-  # post '/persons/create', to: "artists#create"
+  root :to => 'musicians#index'
+  # post '/persons/create', to: "musicians#create"
 
 end
 

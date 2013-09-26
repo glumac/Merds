@@ -8,4 +8,6 @@ class CreateWordusesTable < ActiveRecord::Migration
 end
 
 
+ # add_column :worduses, :id, :primary_key
+
 

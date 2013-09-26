@@ -14,8 +14,8 @@ gem 'jquery-rails'
 # gem 'httparty'
 gem 'pry'
 gem 'pry-nav'
-gem 'lyricfy'
-gem 'musicbrainz', '0.5.2'
+# gem 'lyricfy'
+# gem 'musicbrainz', '~> 0.7.6'
 gem "font-awesome-rails", "~> 3.2.1.3"
 gem "skeleton-rails", "~> 0.1.0"
 gem "awesome_print", "~> 1.2.0"
