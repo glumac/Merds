@@ -1,5 +1,19 @@
 
 
+<div class="four columns offset-by-six alpha">
+<br>
+<br>
+<h1>MERDS</h1>
+<p><span class="small">(music words)</span></p>
+<h5>Who's singing what.</h5>
+<br>
+<form action="/musician_query" method='post' >
+	<!-- <label for="query" >Artist:</label> -->
+	<input type='text' placeholder="<%= Musician.name %>" name='musician_query' />
+	<input type='submit'>
+<form>
+
+
 <table>
 <% @worduse.each do |worduse| %>
 <tr>
@@ -8,3 +22,5 @@
 </tr>
 <% end %>
 </table>
+
+</div>
