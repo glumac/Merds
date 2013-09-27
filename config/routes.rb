@@ -14,6 +14,10 @@ Lyricz::Application.routes.draw do
   post   '/musician_query' => 'musicians#musician_query'
   #method    url            controller  action
 
+  # post '/jokes/:id/flag' => 'jokes#flag', as: 'flag_joke'
+
+  post '/words/:id/is_common_word' => 'words#is_common_word', as: 'is_common_word'
+
   root :to => 'musicians#index'
   # post '/persons/create', to: "musicians#create"
 

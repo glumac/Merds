@@ -16,14 +16,12 @@
 
 
 <table>
-<% @worduse.order('count DESC').take(20).each do |worduse| %>
-<tr>
-		<td><%= worduse.word.word %></td>
-	<td><%= worduse.count %></td>
-</tr>
+<% @worduse.order('count DESC').take(100).each do |worduse| %>
+ <%	next if worduse.word.is_common == true %>
+		<tr>
+			<td><%= worduse.word.word  %></td>
+		<td><%= worduse.count%></td>
+		</tr>
 <% end %>
 </table>
-
 </div>
-
-
