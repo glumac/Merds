@@ -9,13 +9,14 @@
 <br>
 <form action="/musician_query" method='post' >
 	<!-- <label for="query" >Artist:</label> -->
-	<input type='text' placeholder="<%= Musician.name %>" name='musician_query' />
+	<input type='text' placeholder="<% @worduse.first(1).each do |worduse| %>
+		 <%= worduse.musician.name.upcase%><% end %>" name='musician_query' />
 	<input type='submit'>
 <form>
 
 
 <table>
-<% @worduse.each do |worduse| %>
+<% @worduse.order('count DESC').take(20).each do |worduse| %>
 <tr>
 		<td><%= worduse.word.word %></td>
 	<td><%= worduse.count %></td>
@@ -24,3 +25,5 @@
 </table>
 
 </div>
+
+
