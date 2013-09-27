@@ -7,7 +7,7 @@ gem 'pg'
 gem 'devise'
 
 gem 'jquery-rails'
-
+gem "d3-rails"
 gem 'pry'
 gem "pry-rails"
 gem 'pry-nav'

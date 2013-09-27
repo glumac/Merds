@@ -8,4 +8,13 @@ padding-bottom: 0px;
 
 
 
- input.placeholder { text-align: center; }
+ input.placeholder { text-align: left; }
+
+svg {
+		margin: 0px auto;
+		display: block;
+
+
+}
+
+

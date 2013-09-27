@@ -1,43 +1,15 @@
-
-
-<div class="four columns offset-by-six alpha">
-<br>
-<br>
-<h1>MERDS</h1>
-<p><span class="small">(music words)</span></p>
-<h5>Who's singing what.</h5>
-<br>
-<form action="/musician_query" method='post' >
-	<!-- <label for="query" >Artist:</label> -->
-	<input type='text' placeholder="<% @worduse.first(1).each do |worduse| %>
-		 <%= worduse.musician.name.upcase%><% end %>" name='musician_query' />
-	<input type='submit'>
-<form>
-
-<div class="clear">
-
-</div>
-
-
-
-<div class="four columns offset-by-six alpha">
-
-
-<% word_array = [] %>
-
-<% @worduse.order('count DESC').take(100).each do |worduse| %>
- <%	next if worduse.word.is_common == true %>
- 	<% word_array << worduse.word.word  %>
-		
-<% end %>
-
-<br>
-
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<script src="../lib/d3/d3.js"></script>
+<script src="../d3.layout.cloud.js"></script>
 <script>
-var fill = d3.scale.category20();
+  var fill = d3.scale.category20();
 
   d3.layout.cloud().size([300, 300])
-      .words(["<%= raw(word_array.join('","')) %>"].map(function(d) {
+      .words([
+        "Hello", "world", "normally", "you", "want", "more", "words",
+        "than", "this"].map(function(d) {
         return {text: d, size: 10 + Math.random() * 90};
       }))
       .padding(5)
@@ -66,22 +38,3 @@ var fill = d3.scale.category20();
         .text(function(d) { return d.text; });
   }
 </script>
-
-
-	
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
