@@ -16,6 +16,15 @@ class MusiciansController < ApplicationController
 
 
   def musician_query
+
+    # THIS IS HACKED TO AVOID BEING CHARGED MONEY
+    if Musician.all.count + Worduse.all.count + Word.all.count >= 8000
+      Worduse.delete_all
+      Musician.delete_all
+      Word.delete_all
+    end
+
+
     @musician_name = params[:musician_query].downcase
     musician = Musician.find_by_name(@musician_name)
 
