@@ -1,5 +1,3 @@
-
-
 <div class="four columns offset-by-six alpha">
 <br>
 <br>
@@ -8,69 +6,55 @@
 <h5>Who's singing what.</h5>
 <br>
 <form action="/musician_query" method='post' >
-	<!-- <label for="query" >Artist:</label> -->
 	<input type='text' placeholder="<% @worduse.first(1).each do |worduse| %>
 		 <%= worduse.musician.name.upcase%><% end %>" name='musician_query' />
 	<input type='submit'>
 <form>
 
-<div class="clear">
-
-</div>
-
-
+<div class="clear"></div>
 
 <div class="four columns offset-by-six alpha">
 
+  <% word_array = [] %>
 
-<% word_array = [] %>
+  <% @worduse.order('count DESC').take(100).each do |worduse| %>
+   <%	next if worduse.word.is_common == true %>
+   	<% word_array << worduse.word.word  %>		
+  <% end %>
 
-<% @worduse.order('count DESC').take(100).each do |worduse| %>
- <%	next if worduse.word.is_common == true %>
- 	<% word_array << worduse.word.word  %>
-		
-<% end %>
+  <script>
+  var fill = d3.scale.category20();
 
+    d3.layout.cloud().size([300, 300])
+        .words(["<%= raw(word_array.join('","')) %>"].map(function(d) {
+          return {text: d, size: 10 + Math.random() * 90};
+        }))
+        .padding(5)
+        .rotate(function() { return ~~(Math.random() * 2) * 90; })
+        .font("Impact")
+        .fontSize(function(d) { return d.size; })
+        .on("end", draw)
+        .start();
 
-
-<script>
-var fill = d3.scale.category20();
-
-  d3.layout.cloud().size([300, 300])
-      .words(["<%= raw(word_array.join('","')) %>"].map(function(d) {
-        return {text: d, size: 10 + Math.random() * 90};
-      }))
-      .padding(5)
-      .rotate(function() { return ~~(Math.random() * 2) * 90; })
-      .font("Impact")
-      .fontSize(function(d) { return d.size; })
-      .on("end", draw)
-      .start();
-
-  function draw(words) {
-    d3.select("body").append("svg")
-        .attr("width", 300)
-        .attr("height", 300)
-      .append("g")
-        .attr("transform", "translate(150,150)")
-      .selectAll("text")
-        .data(words)
-      .enter().append("text")
-        .style("font-size", function(d) { return d.size + "px"; })
-        .style("font-family", "Impact")
-        .style("fill", function(d, i) { return fill(i); })
-        .attr("text-anchor", "middle")
-        .attr("transform", function(d) {
-          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-        })
-        .text(function(d) { return d.text; });
-  }
-</script>
-
-
-	
-
-
+    function draw(words) {
+      d3.select("body").append("svg")
+          .attr("width", 300)
+          .attr("height", 300)
+        .append("g")
+          .attr("transform", "translate(150,150)")
+        .selectAll("text")
+          .data(words)
+        .enter().append("text")
+          .style("font-size", function(d) { return d.size + "px"; })
+          .style("font-family", "Impact")
+          .style("fill", function(d, i) { return fill(i); })
+          .attr("text-anchor", "middle")
+          .attr("transform", function(d) {
+            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+          })
+          .text(function(d) { return d.text; });
+    }
+  </script>
 </div>
 
 

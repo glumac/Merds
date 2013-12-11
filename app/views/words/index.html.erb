@@ -1,34 +1,20 @@
-
-
 <h1>WORDS!</h1>
-
 <table>
-
 	<thead>
 		<tr>
 			<th>Word</th>
-			<th>Is Common?</th>
-		
+			<th>Is Common?</th>		
 		</tr>	
 	</thead>
-
 	<tbody>
-
 		<% @words.each do |word| %>
 			<tr>
-				<td>  <%= word.word %>  </td>
-				<td>  <%= word.is_common %>    </td>
-				<td> </td>
-
+				<td><%= word.word %></td>
+				<td><%= word.is_common %></td>
 				<td>
 					<%= button_to "Is Common", is_common_word_path(word) %> 
 				</td>
-
-				
-
 			</tr>	
 		<% end %>
-
 	</tbody>
-
 </table>

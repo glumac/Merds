@@ -1,8 +1,6 @@
 module ApiSearch
-		# require 'musicbrainz' IF GOING TO USE MODULE ELSEWHERE
-
-
-	include MusicBrainz
+# require 'musicbrainz' IF GOING TO USE MODULE ELSEWHERE
+include MusicBrainz
 
 	def print_copywrite
 		puts "Glumac"
@@ -20,8 +18,8 @@ module ApiSearch
 		  c.perform_caching = true
 
 		  # Querying config (optional)
-		  c.query_interval = 0.2 # seconds
-		  c.tries_limit = 200
+		  c.query_interval = 0.00001 # seconds
+		  # c.tries_limit = 200
 		end
 	end
 
@@ -37,38 +35,23 @@ module ApiSearch
 		musician_lyrics = api_search_lyrics(musician_tracks)
 		words = count_words(musician_lyrics)
 		name = musician_name ####TRIPLE TRIPLE CHECK THIS
-
 		return [name, words]
 
 	end
 
 	def api_search_musician(musician_name)
-
 		query = musician_name
 		search = MusicBrainz::Artist.find_by_name("#{query.gsub(" ", "_")}")
 		sleep(1)
 		return search
-
 	end
 
 	def api_search_albums(search)
-
 		musician_releases = {}
-
 		search.release_groups.each do |release_group|
 			sleep(1)
 		  if releases = release_group.releases
-
-
-
-
-
 		  	releases = [releases[0]]
-
-
-
-
-
 		    releases.each do |release|
 		      if release.type == "Album"
 		        if !musician_releases[release.title]
@@ -79,29 +62,16 @@ module ApiSearch
 		    end
 		  end
 		end
-
 		return musician_releases
-
 	end
 
-
 	def api_search_tracks(musician_releases)
-
 		musician_tracks = []
-
 		musician_releases.each do |release_title, release|
 			sleep(1)
 		  if tracks = release.tracks
 		    # p "#{release.title}: #{tracks.count}"
-
-
-
-
 		    tracks = [tracks[0]]
-
-
-
-
 		    tracks.each do |track|
 		    	puts "Track: #{track.title}"
 		      musician_tracks << track.title
@@ -111,12 +81,10 @@ module ApiSearch
 			return musician_tracks
 	end
 
-		#HERE IS WHERE I TAKE THE ARIST TRACKS ARRAY AND SPIT OUT LARGE HASH OF LYRICS AND COUNT
+#HERE IS WHERE I TAKE THE ARIST TRACKS ARRAY AND SPIT OUT LARGE HASH OF LYRICS AND COUNT
 
 	def api_search_lyrics(musician_tracks)
-
 		musician_lyrics = []
-
 		fetcher = Lyricfy::Fetcher.new
 
 		musician_tracks.uniq.each do |title|
@@ -127,36 +95,26 @@ module ApiSearch
 		    musician_lyrics << words
 		  end
 		end
-
 		return musician_lyrics
-
 	end
 
+# def count_words
+#    words = Hash.new(0); each{ |v| words[v] += 1 }; words
+# end
 
-	# def count_words
- #    words = Hash.new(0); each{ |v| words[v] += 1 }; words
-	# end
-
-	# THIS IS REALLY WHAT DEFINE FREQUENCY IS DOING WITH NORMAl LONGER SYNTAX
+# THIS IS REALLY WHAT DEFINE FREQUENCY IS DOING WITH NORMAl LONGER SYNTAX
 	def count_words(text_block)
-
-		# puts text_block
-
+# puts text_block
 		text_array = text_block.flatten
     words = {};
-
     text_array.each do |a_word| 
-
     	puts a_word
     	if words[a_word] 
     		words[a_word] +=1
     	else
     		words[a_word] = 1
     	end
-
     end
-
     return words
 	end
-
 end
